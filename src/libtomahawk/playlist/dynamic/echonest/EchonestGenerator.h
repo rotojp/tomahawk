@@ -29,7 +29,6 @@
 #include "DllMacro.h"
 
 #include <echonest/Playlist.h>
-#include <echonest/Genre.h>
 
 namespace Tomahawk
 {
