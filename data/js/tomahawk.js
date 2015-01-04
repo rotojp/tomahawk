@@ -571,8 +571,8 @@ Tomahawk.PluginManager = {
         Tomahawk.registerScriptPlugin(type, object.id);
     },
 
-    invoke: function (requestId, objectId, methodName, params ) {
-        Tomahawk.log("requestId: " + requestId + " objectId: " + objectId + " methodName: " + methodName + " params: " + params);
+
+    invokeSync: function (objectId, methodName, params) {
         if (!this.objects[objectId]) {
             Tomahawk.log("Object not found!");
         } else {
@@ -581,7 +581,15 @@ Tomahawk.PluginManager = {
             }
         }
 
-        Promise.resolve(this.objects[objectId][methodName](params)).then(function (result) {
+        if (typeof this.objects[objectId][methodName] === 'function') {
+            return this.objects[objectId][methodName](params);
+        }
+
+        return this.objects[objectId][methodName];
+    },
+
+    invoke: function (requestId, objectId, methodName, params ) {
+        Promise.resolve(this.invokeSync(objectId, methodName, params)).then(function (result) {
             if (typeof result === 'object') {
                 Tomahawk.reportScriptJobResults({
                     requestId: requestId,
@@ -590,7 +598,7 @@ Tomahawk.PluginManager = {
             } else {
                 Tomahawk.reportScriptJobResults({
                     requestId: requestId,
-                    error: "Scripts need to return objects for requests"
+                    error: "Scripts need to return objects for requests: methodName: " + methodName + " params: " + JSON.encode(params)
                 });
             }
         }, function (error) {
