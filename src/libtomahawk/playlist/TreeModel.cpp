@@ -222,10 +222,6 @@ TreeModel::addTracks( const album_ptr& album, const QModelIndex& parent )
 void
 TreeModel::addCollection( const collection_ptr& collection )
 {
-    qDebug() << Q_FUNC_INFO << collection->name()
-                            << collection->source()->id()
-                            << collection->source()->nodeId();
-
     startLoading();
 
     m_collection = collection;
