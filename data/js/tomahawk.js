@@ -30,8 +30,8 @@ if ((typeof Tomahawk === "undefined") || (Tomahawk === null)) {
                 }
             };
         },
-        log: function (message) {
-            console.log(message);
+        log: function () {
+            console.log.apply(arguments);
         }
     };
 }
